@@ -145,7 +145,7 @@ int video_display(int cpuid, int video_index, int crtc_index, int plane_index, u
     return(TRUE);
 }
 
-int main()    video_display(int cpuid, int video_index, int crtc_index, int plane_index, uint32_t display_x, uint32_t display_y, uint32_t display_w, uint32_t display_h)
+int main()    
 {
     array<thread, 2> threads;
     threads = {thread(video_display, 0, 10, 0, 0, 128, 0, 1280, 960),
