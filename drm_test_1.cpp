@@ -13,6 +13,7 @@
 #include <linux/videodev2.h>
 #include <linux/types.h>
 #include <drm_fourcc.h>
+#include <thread>
 
 #include "v4l2.h"
 #include "drm_dev.h"
