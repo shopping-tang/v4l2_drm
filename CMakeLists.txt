@@ -9,7 +9,7 @@ set(CMAKE_C_COMPILER gcc)
 set(CMAKE_CXX_COMPILER g++)
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS}")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -march=native ")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -march=native -O3 -pthread")
 
 include_directories(${CMAKE_SOURCE_DIR}/
 					#/usr/include
@@ -19,7 +19,9 @@ include_directories(${CMAKE_SOURCE_DIR}/
 				#link_directories(#/usr/lib
 				#/usr/lib/aarch64-linux-gnu
 				# ../samples-rklinux-opengl-master/native/lib)
-set(link_libs /usr/lib/aarch64-linux-gnu/libdrm.so)
+set(link_libs /usr/lib/aarch64-linux-gnu/libdrm.so
+					   pthread
+			)
 			  #/usr/lib/aarch64-linux-gnu/libdrm_amdgpu.so
 			  #/usr/lib/aarch64-linux-gnu/libdrm_freedreno.so
 			  #/usr/lib/aarch64-linux-gnu/libdrm_nouveau.so)
