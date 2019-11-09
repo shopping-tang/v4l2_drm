@@ -12,6 +12,7 @@
 #include <xf86drm.h>
 #include <linux/videodev2.h>
 #include <linux/types.h>
+#include <drm_fourcc.h>
 
 #include "v4l2.h"
 #include "drm_dev.h"
@@ -57,8 +58,8 @@ int main()
         return (FALSE);
     }
 
-    if (crtc >= dev->num_crtcs) {
-        printf("Invalid crtc %d (num=%d)\n", crtc, dev->num_crtcs);
+    if (crtc_index >= dev->num_crtcs) {
+        printf("Invalid crtc %d (num=%d)\n", crtc_index, dev->num_crtcs);
         return (FALSE);
     }
 
@@ -110,7 +111,7 @@ int main()
         usleep(15 * 1000);
     }
 
-    for (i = 0; i < num_test_planes; i++)
+    for (int i = 0; i < num_test_planes; i++)
         put_sp_plane(plane[i]);
 
 
