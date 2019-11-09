@@ -88,7 +88,7 @@ struct sp_bo *create_sp_bo(struct sp_dev *dev, uint32_t width, uint32_t height,
     bo->depth = depth;
     bo->bpp = _bpp;
     bo->format = format;
-    printf("format = %d\n",format);
+    //printf("format = %d\n",format);
     bo->flags = flags;
 
     bo->handle = cd.handle;
