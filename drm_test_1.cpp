@@ -20,6 +20,7 @@
 #include "drm_bo.h"
 #include "drm_modeset.h"
 
+using namespace std ;
 //static int terminate = 0;
 
 //static void sigint_handler(int arg)
