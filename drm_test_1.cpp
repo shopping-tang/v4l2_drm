@@ -111,6 +111,7 @@ int video_display(int cpuid, int video_index, int crtc_index, int plane_index, u
         yuyv2bgr24(srcBuffer, dstBuffer);
 
         memcpy(plane[plane_index]->bo->map_addr, (void *)dstBuffer, plane[plane_index]->bo->size );
+        //memcpy(plane[plane_index]->bo->map_addr, (void *)dstBuffer, BUFFER_SIZE_det );
         ret = set_sp_plane(dev, plane[plane_index], test_crtc, display_x, display_y, display_w, display_h);
         if (ret) {
             printf("failed to set plane %d %d\n",plane_index, ret);
