@@ -21,12 +21,12 @@
 #include "drm_modeset.h"
 
 using namespace std;
-//static int terminate = 0;
+static int terminate = 0;
 
-//static void sigint_handler(int arg)
-//{
-//    terminate = 1;
-//}
+static void sigint_handler(int arg)
+{
+    terminate = 1;
+}
 
 int video_display(int cpuid, int video_index, int crtc_index, int plane_index, uint32_t display_x, uint32_t display_y, uint32_t display_w, uint32_t display_h)
 {
@@ -76,7 +76,9 @@ int video_display(int cpuid, int video_index, int crtc_index, int plane_index, u
         return (FALSE);
     }
     test_crtc = &dev->crtcs[crtc_index]; // crtc_index is a parameter , i used to set it equal to 0 .
-
+    drmModeCrtcPtr save_crtc = test_crtc->crtc ;
+    drmModeConnector *save_connector = dev->connectors[0].conn;
+    
     plane = (sp_plane **)calloc(dev->num_planes, sizeof(*plane));
     if (!plane) {
         printf("Failed to allocate plane array\n");
@@ -105,13 +107,13 @@ int video_display(int cpuid, int video_index, int crtc_index, int plane_index, u
     printf("plane format = %d\n",plane[plane_index]->bo->format);
     /************************* loop start *************************/
     printf("/***************** loop start *****************/\n");
-    while(1)
+    while(!terminate)
     {
         srcBuffer = get_img(buffer, srcBuffer);
         yuyv2bgr24(srcBuffer, dstBuffer);
 
-        memcpy(plane[plane_index]->bo->map_addr, (void *)dstBuffer, plane[plane_index]->bo->size );
-        //memcpy(plane[plane_index]->bo->map_addr, (void *)dstBuffer, BUFFER_SIZE_det );
+        //memcpy(plane[plane_index]->bo->map_addr, (void *)dstBuffer, plane[plane_index]->bo->size );
+        memcpy(plane[plane_index]->bo->map_addr, (void *)dstBuffer, BUFFER_SIZE_det );
         ret = set_sp_plane(dev, plane[plane_index], test_crtc, display_x, display_y, display_w, display_h);
         if (ret) {
             printf("failed to set plane %d %d\n",plane_index, ret);
@@ -119,10 +121,17 @@ int video_display(int cpuid, int video_index, int crtc_index, int plane_index, u
         }
         usleep(15 * 1000);
     }
-
-    //for (int i = 0; i < num_test_planes; i++)
-        //put_sp_plane(plane[i]);
-    put_sp_plane(plane[plane_index]);
+    
+    ret = drmModeSetCrtc(dev->fd, save_crtc->crtc_id, save_crtc->buffer_id,
+                         save_crtc->x, save_crtc->y,
+                         &save_connector->connector_id, 1, &save_crtc->mode);
+    if (ret) {
+        printf("failed to restore crtc .\n");
+    }
+    
+    for (int i = 0; i < num_test_planes; i++)
+        put_sp_plane(plane[i]);
+    
 
     free(srcBuffer);
     free(dstBuffer);
@@ -136,6 +145,7 @@ int video_display(int cpuid, int video_index, int crtc_index, int plane_index, u
 
 int main()    
 {
+    signal(SIGINT, sigint_handler);
     array<thread, 2> threads;
     threads = {thread(video_display, 0, 10, 0, 0, 128, 0, 1280, 960),
                thread(video_display, 1, 12, 0, 2, 128, 1088, 1280, 960),
