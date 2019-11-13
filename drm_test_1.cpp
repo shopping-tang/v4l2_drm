@@ -21,11 +21,11 @@
 #include "drm_modeset.h"
 
 using namespace std;
-static int terminate = 0;
+static int _terminate = 0;
 
 static void sigint_handler(int arg)
 {
-    terminate = 1;
+    _terminate = 1;
 }
 
 int video_display(int cpuid, int video_index, int crtc_index, int plane_index, uint32_t display_x, uint32_t display_y, uint32_t display_w, uint32_t display_h)
@@ -107,7 +107,7 @@ int video_display(int cpuid, int video_index, int crtc_index, int plane_index, u
     printf("plane format = %d\n",plane[plane_index]->bo->format);
     /************************* loop start *************************/
     printf("/***************** loop start *****************/\n");
-    while(!terminate)
+    while(!_terminate)
     {
         srcBuffer = get_img(buffer, srcBuffer);
         yuyv2bgr24(srcBuffer, dstBuffer);
