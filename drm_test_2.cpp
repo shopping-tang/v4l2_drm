@@ -69,7 +69,7 @@ int main()
     }
     test_crtc = &dev->crtcs[crtc_index]; // crtc_index is a parameter , i used to set it equal to 0 .
     drmModeCrtcPtr save_crtc = test_crtc->crtc ;
-    drmModeConnector *save_connector = dev->connectors[0].conn
+    drmModeConnector *save_connector = dev->connectors[0].conn;
 
     plane = (sp_plane **)calloc(dev->num_planes, sizeof(*plane));
     if (!plane) {
@@ -119,7 +119,7 @@ int main()
                          save_crtc->x, save_crtc->y,
                          &save_connector->connector_id, 1, &save_crtc->mode);
     if (ret) {
-        LOGE("failed to restore crtc: %m");
+        printf("failed to restore crtc \n");
     }
 
     for (int i = 0; i < num_test_planes; i++)
