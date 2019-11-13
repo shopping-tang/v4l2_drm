@@ -129,10 +129,10 @@ int video_display(int cpuid, int video_index, int crtc_index, int plane_index, u
         printf("failed to restore crtc .\n");
     }
     
-    for (int i = 0; i < num_test_planes; i++)
+    for (int i = 0; i < num_test_planes; i++){
         put_sp_plane(plane[i]);
-    
-
+    }
+    printf("Display is closed !\n");
     free(srcBuffer);
     free(dstBuffer);
     close_v4l2(buffer);
