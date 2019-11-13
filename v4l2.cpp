@@ -26,7 +26,7 @@ void yuyv2bgr24(unsigned char*yuyv, unsigned char*rgb)
     unsigned int i, in, rgb_index = 0;
     unsigned char y0, u0, y1, v1;
     int r, g, b;
-    unsigned int out = 0, x, y;
+    unsigned int x , y;
 
     for(in = 0; in < width * height * 2; in += 4)
     {
@@ -67,7 +67,7 @@ void yuyv2bgra32(unsigned char*yuyv, unsigned char*bgra)
     unsigned int i, in, bgra_index = 0;
     unsigned char y0, u0, y1, v1;
     int a = 0xFF, r, g, b;
-    unsigned int out = 0, x, y;
+    unsigned int x , y;
 
     for(in = 0; in < width * height * 2; in += 4)
     {
